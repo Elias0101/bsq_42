@@ -6,11 +6,13 @@
 /*   By: tkarri <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 19:01:29 by tkarri            #+#    #+#             */
-/*   Updated: 2019/03/18 21:23:24 by tkarri           ###   ########.fr       */
+/*   Updated: 2019/03/19 15:42:40 by tkarri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+#include <stdio.h>
 
 char	**g_mass; //массив
 
@@ -35,18 +37,22 @@ void	print_answer(void)
 	int i;
 	int j;
 
+	char c; //delete
+
 	i = 0;
 	j = 0;
 	while (i < g_rows)
 	{
 		while (j < g_columns)
-		{
+		{/*
 			if (g_mass[i][j] == g_obstacle)
 				write(1, &g_obstacle, 1);
 			else if (i >= g_i && j >= g_j && i < (g_i + g_len) && j < (g_j + g_len))
 				write(1, &g_fill, 1);
 			else
-				write(1, &g_empty, 1);
+			write(1, &g_empty, 1);*/
+			c = g_mass[i][j];
+			write(1, &c, 1);
 			j++;
 		}
 		write(1, "\n", 1);
@@ -113,8 +119,91 @@ void	fill_square()
 		print_answer();
 }
 
-int		main(void)
+void	readfile(int fd)
 {
-	fill_square();
+	char element[BUF_SIZE];
+	char reading[1];
+	int ret;
+	int count;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	ret = read(fd, element, BUF_SIZE);
+	g_rows = element[0];
+	g_empty = element[1];
+	g_obstacle = element[2];
+	g_fill = element[3];
+	ret = read(fd, reading, 1);
+	while ((ret = read(fd, reading, 1)) != 0)
+	{
+		if (reading[0] == '\n')
+		{
+			g_mass[i][j] = '\0';
+			j = 0;
+			i++;
+		}
+		else
+		{
+			g_mass[i][j] = reading[0];
+			j++;
+		}
+	}
+	g_mass[i][0] = '\0';
+}
+
+void	check_input()
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (g_mass[i][0] != '\0')
+	{
+		while (g_mass[i][j] != '\0')
+		{
+			printf("%c", g_mass[i][j]); 
+			j++;
+		}
+		printf("\n");
+		j = 0;
+		i++;
+	}
+}
+
+int		main(int ac, char **ar)
+{
+	int i;
+	int fd;
+	int j;
+
+	j = 0;
+	i = 1;
+	if (ac > 1)
+	{
+		while (ar[i] != '\0')
+		{
+			g_mass = (char**)malloc(sizeof(char*) * (9 + 1));
+			while (j < 10)
+			{
+				g_mass[j] = (char*)malloc(sizeof(char) * 27);
+				j++;
+			}
+			fd = open(ar[i], O_RDONLY);
+			printf("opened\n");
+			if (fd != -1)
+			{
+				readfile(fd);
+				printf("read\n");
+				check_input();
+				fill_square();
+				//print_answer();
+			}
+			i++;
+		}
+	}
 	return (0);
 }
