@@ -6,7 +6,7 @@
 /*   By: tkarri <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 19:01:29 by tkarri            #+#    #+#             */
-/*   Updated: 2019/03/19 22:12:33 by bnigellu         ###   ########.fr       */
+/*   Updated: 2019/03/19 21:16:52 by bnigellu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void	check_input()
 int		rest_lines(int fd)
 {
 	int ret;
-	char *buf;
+	int *buf;
 	int i;
 	int j;
 
@@ -152,11 +152,9 @@ int		rest_lines(int fd)
 	buf[1] = '\0';
 	while ((ret = read(fd, buf, 1)) > 0)
 	{
-		printf("Zashel\n");
 		buf[1] = '\0';
 		if (buf[0] == '\n')
 		{
-			printf("g_mass[%d] = |%s|\n", i, g_mass[i]);
 			i++;
 			j = 0;
 		}
@@ -178,21 +176,14 @@ void second_line(char *str)
 {
 	int i;
 
-	printf("%s\n", str);
 	i = 0;
 	while (str[i] != '\0')
 		i++;
 	g_columns = i;
-	printf("col: %d\n", g_columns);
 	i = 0;
 	while (i != g_rows)
 	{
 		g_mass[i] = (char*)malloc(sizeof(char) * g_columns + 1);
-		if (g_mass[i] == NULL)
-		{
-			printf("UPS\n");
-			break;
-		}
 		g_mass[i][g_columns] = '\0';
 		i++;
 	}
@@ -202,34 +193,6 @@ void second_line(char *str)
 		g_mass[0][i] = str[i];
 		i++;
 	}
-	printf("g_mass[0] = |%s|\n", g_mass[0]);
-}
-
-int	my_atoi(char *str)
-{
-	int i;
-	int res;
-	int sign;
-
-	res = 0;
-	i = 0;
-	sign =  1;
-	if (str[0] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	else if (str[0] == '+')
-		i++;
-	while (str[i] != '\n')
-	if ((str[i] >= '0') && (str[i] <= '9'))
-	{
-		res = res * 10 + (str[i] - 48);
-		i++;
-	}
-	else
-		return (0);
-	return (res * sign);
 }
 
 int first_line(char *str)
@@ -247,21 +210,18 @@ int first_line(char *str)
 		g_obstacle = str[i];
 		i--;
 		g_empty = str[i];
-		str[i] = '\n';
+		str[i] = '\0';
 		g_rows = my_atoi(str);
 		if (g_rows <= 0)
 		   return (0);
 		free(str);
-		printf("%d %c %c %c\n", g_rows, g_empty, g_obstacle, g_fill);
-		if ((g_mass = (char**)malloc(sizeof(char*) * g_rows)) != NULL)
-			return (1);
-		else
-			return (0);
+		g_mass = (char**)malloc(sizeof(char*) * g_rows);
+		return (1);
 	}
 	else
 		return (0);
 }
-/*
+
 int my_atoi(char *str)
 {
 	int i;
@@ -287,18 +247,6 @@ int my_atoi(char *str)
 		else
 			return (0);
 	return (res * sign);
-	}*/
-
-void assign(char *s1, char *s2)
-{
-	int i;
-	
-	i = 0;
-	while ((s1[i] != '\0') || (s2[i] != '\0'))
-    	{
-      		s1[i] = s2[i];
-      		i++;
-    	}
 }
 
 char	*line_str(int fd, int *p_ret)
@@ -311,7 +259,7 @@ char	*line_str(int fd, int *p_ret)
 
 	buf = (char*)malloc(sizeof(char) * 2);
 	buf[1] = '\0';
-	k = 0;
+	k = 1;
 	s2 = (char*)malloc(sizeof(char) * 2);
 	s2[1] = '\0';
 	while (((ret = read(fd, buf, 1)) > 0) && (buf[0] != '\n'))
@@ -328,13 +276,12 @@ char	*line_str(int fd, int *p_ret)
 		free(s1);
 	}
 	s2[k] = '\0';
-	printf("s2: |%s|\n", s2);
 	free(buf);
 	*p_ret = ret;
 	return (s2);
 }
 
-/*void assign(char *s1, char *s2)
+void assign(char *s1, char *s2)
 {
 	int i;
 
@@ -344,7 +291,7 @@ char	*line_str(int fd, int *p_ret)
 		s1[i] = s2[i];
 		i++;
 	}
-	}*/
+}
 
 
 int		main(int ac, char **ar)
@@ -363,8 +310,6 @@ int		main(int ac, char **ar)
 			if (rest_lines(fd) == 1)
 				check_input();
 		}
-		i++;
 	}
-	close(fd);
 	return (0);
 }
