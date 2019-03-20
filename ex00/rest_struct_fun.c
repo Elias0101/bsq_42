@@ -6,7 +6,7 @@
 /*   By: bnigellu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 14:56:04 by bnigellu          #+#    #+#             */
-/*   Updated: 2019/03/20 15:16:46 by bnigellu         ###   ########.fr       */
+/*   Updated: 2019/03/20 22:43:16 by bnigellu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			rest_lines(int fd)
 		else
 			return (0);
 	}
-	if ((ret = read(fd, buf, 1)) > 0)
+	if (((ret = read(fd, buf, 1)) > 0) || (i != g_rows))
 		return (0);
 	return (1);
 }

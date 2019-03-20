@@ -6,7 +6,7 @@
 /*   By: bnigellu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:19:01 by bnigellu          #+#    #+#             */
-/*   Updated: 2019/03/20 15:51:43 by tkarri           ###   ########.fr       */
+/*   Updated: 2019/03/20 22:43:49 by bnigellu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,20 @@ int 		main(int n, char **str)
 {
 	int i;
 
-	i = 1;
+	i = 0;
 	while (i < n)
 	{
-		if (massive(str[i]) == 0)
+		if ((massive(str[i], n) == 0) && (n > 1))
 			write(2, "map error\n", 10);
-		i++;
+		else
+		{
 		printf("\nrows: %d columns: %d empty: %c obstacle: %c fill: %c \n", g_rows, g_columns, g_empty, g_obstacle, g_fill);
-		find_biggest_square(0, 0, 0);
-		printf("\n\nfinished: g_i: %d, g_j: %d, g_len: %d\n", g_i, g_j, g_len);
-		printf("\n\n");
-		print_answer();
+			find_biggest_square(0, 0, 0);
+			printf("\n\nfinished: g_i: %d, g_j: %d, g_len: %d\n", g_i, g_j, g_len);
+			printf("\n\n");
+			print_answer();
+		}
+		i++;
 	}
 	return (0);
 }

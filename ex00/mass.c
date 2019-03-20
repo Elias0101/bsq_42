@@ -6,7 +6,7 @@
 /*   By: bnigellu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 08:38:31 by bnigellu          #+#    #+#             */
-/*   Updated: 2019/03/20 15:34:38 by bnigellu         ###   ########.fr       */
+/*   Updated: 2019/03/20 22:41:55 by bnigellu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ void		check_input(void)
 	}
 }
 
-int			massive(char *str)
+int			massive(char *str, int n)
 {
 	int		fd;
 
-	if ((fd = open(str, O_RDONLY)) == -1)
+	if (n == 1)
+		fd = 0;
+	else if ((fd = open(str, O_RDONLY)) == -1)
 		return (0);
 	if (first_line(fd) == 0)
 		return (0);

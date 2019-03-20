@@ -6,7 +6,7 @@
 /*   By: tkarri <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 21:18:26 by tkarri            #+#    #+#             */
-/*   Updated: 2019/03/20 15:28:33 by bnigellu         ###   ########.fr       */
+/*   Updated: 2019/03/20 22:40:52 by bnigellu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct		s_list
 
 t_list				*create_el(char el);
 
-int					massive(char *str);
+int					massive(char *str, int n);
 
 int					check_el(t_list *root);
 
