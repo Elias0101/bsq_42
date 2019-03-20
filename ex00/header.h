@@ -6,7 +6,7 @@
 /*   By: tkarri <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 21:18:26 by tkarri            #+#    #+#             */
-/*   Updated: 2019/03/19 21:24:55 by bnigellu         ###   ########.fr       */
+/*   Updated: 2019/03/20 09:07:27 by bnigellu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,11 @@
 # include <fcntl.h>
 
 # include <stdio.h>
+
+typedef struct		s_list
+{
+	struct s_list	*next;
+	char			el;
+}					t_list;
+
 #endif

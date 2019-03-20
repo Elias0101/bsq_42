@@ -6,7 +6,7 @@
 /*   By: tkarri <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 19:01:29 by tkarri            #+#    #+#             */
-/*   Updated: 2019/03/19 22:12:33 by bnigellu         ###   ########.fr       */
+/*   Updated: 2019/03/19 22:44:49 by bnigellu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,15 +316,26 @@ char	*line_str(int fd, int *p_ret)
 	s2[1] = '\0';
 	while (((ret = read(fd, buf, 1)) > 0) && (buf[0] != '\n'))
 	{
+		printf("line_str (s2d): |%s|, k = %d\n", s2, k);
 		s2[k] = buf[0];
-		s1 = (char*)malloc(sizeof(char) * k + 1);
+		printf("line_str (s2p): |%s|, k = %d\n", s2, k);
+		if ((s1 = (char*)malloc(sizeof(char) * k + 2)) == NULL)
+			printf("NULL\n");
 		s1[k+1] = '\0';
+//		printf("do: s1 = |%s|, s2 = |%s|\n", s1, s2);
 		assign(s1,s2);
-		free(s2);
+		printf("line_str (s1c): |%s|, k = %d\n", s1, k);
+//		printf("posle: s1 = |%s|, s2 = |%s|\n", s1, s2);
+		free(s2);	
 		k++;
-		s2 = (char*)malloc(sizeof(char) * k + 1);
+		if ((s2 = (char*)malloc(sizeof(char) * k + 1)) == NULL)
+		   printf("NULL\n");	
 		s2[k + 1] = '\0';
+		if (k == 16)
+			printf("line_str: |%s|\ns2 = |%s|\n", s1, s2);
 		assign(s2, s1);
+		if (k == 16)
+			printf("line_str: |%s|\ns2 = |%s|\n", s1, s2);
 		free(s1);
 	}
 	s2[k] = '\0';
@@ -359,6 +370,7 @@ int		main(int ac, char **ar)
 		if (((fd = open(ar[i], O_RDONLY)) != -1)
 				&& (first_line(line_str(fd, &ret)) != 0))
 		{
+			printf("Vizov second_line\n");
 			second_line(line_str(fd, &ret));
 			if (rest_lines(fd) == 1)
 				check_input();
