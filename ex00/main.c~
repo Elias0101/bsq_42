@@ -6,7 +6,7 @@
 /*   By: bnigellu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:19:01 by bnigellu          #+#    #+#             */
-/*   Updated: 2019/03/20 15:51:43 by tkarri           ###   ########.fr       */
+/*   Updated: 2019/03/20 15:46:43 by tkarri           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void        find_biggest_square(int i, int j, int len)
             && (g_columns - j) > len)
         {
             printf("precycle check: i + len <= g_rows: %d <= %d\nj + len <= g_columns: %d <= %d\n", i + len, g_rows, j + len, g_columns);
-            while (i + len < g_rows && j + len < g_columns && ((new_len = try_to_fill(i, j, len + 1)) > len))
+            while (i + len <= g_rows && j + len <= g_columns && ((new_len = try_to_fill(i, j, len + 1)) > len))
             {
                 len = new_len;
                 printf("in-cycle check: i + len <= g_rows: %d <= %d\nj + len <= g_columns: %d <= %d\n", i + len, g_rows, j + len, g_columns);
